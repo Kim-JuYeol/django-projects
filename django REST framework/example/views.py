@@ -1,4 +1,5 @@
-from rest_framework import viewsets, permissions, generics, status
+from rest_framework import viewsets, permissions, generics, status, viewsets
+from rest_framework import mixins
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
@@ -31,3 +32,16 @@ def bookAPI(request, bid):
     book = get_object_or_404(Book, bid=bid)
     serializer = BookSerializer(book)
     return Response(serializer.data, status=status.HTTP_200_OK)
+"""
+class BooksAPIMixins(generics.ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+class BookAPIMixins(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    lookup_field = "bid"
+"""
+class BookViewSet(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
